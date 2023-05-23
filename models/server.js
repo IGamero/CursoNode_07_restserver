@@ -7,7 +7,7 @@ class Server {
 
     constructor() {
         this.app = express(); // creamos el servidor con el constructor de server
-        this.port = process.env.PORT || 3000;
+        this.port = process.env.PORT;
         this.usersPath = '/API/users'
 
         // Middlewares (funciones que se van a ejecutar SIEMPRE que se inicie el servidor)

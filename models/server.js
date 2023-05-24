@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');   // permite un controll de acceso.
+const { dbConnection } = require('../database/config.db');
 // puedes listar quien puede entrar y quien no.
 
 
@@ -8,7 +9,10 @@ class Server {
     constructor() {
         this.app = express(); // creamos el servidor con el constructor de server
         this.port = process.env.PORT;
-        this.usersPath = '/API/users'
+        this.usersPath = '/API/users';
+
+        // Conectar a la Base de Datos
+        this.conectarDB()
 
         // Middlewares (funciones que se van a ejecutar SIEMPRE que se inicie el servidor)
         // se usan con .use()
@@ -16,6 +20,10 @@ class Server {
 
         // Rutas de la app
         this.routes()
+    }
+
+    async conectarDB() {
+        await dbConnection();
     }
 
     middlewares() {

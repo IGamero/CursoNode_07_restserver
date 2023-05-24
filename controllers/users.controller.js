@@ -1,9 +1,12 @@
-const { request, response } = require('express')
+const { request, response } = require('express');
+const bcryptjs = require('bcryptjs');
+
+const User = require("../models/user"); // Instancias del modelo
 
 
 const getUser = (req = request, res = response) => {
-        //{ valores por defecto }
-    const { q = 'No Data', name = 'No Data', token = 'No Data', page = 1, limit = 10 } = req.query; 
+    //{ valores por defecto }
+    const { q = 'No Data', name = 'No Data', token = 'No Data', page = 1, limit = 10 } = req.query;
 
     res.json({
         // code: 1,
@@ -16,15 +19,31 @@ const getUser = (req = request, res = response) => {
     });
 }
 
-const postUser = (req = request, res = response) => {
+const postUser = async (req = request, res = response) => {
 
-    const { name, age } = req.body; // esto es lo que nos envia el usuario desde front
+    const { name, email, pass, role } = req.body; // esto es lo que nos envia el usuario desde front
+    const user = new User({ name, email, pass, role });
+
+    // Verificar si el correo existe (Validaciones)
+    const existEmail = await User.findOne({ email });
+    if (existEmail) {
+        // Ya existe ese correo
+        return res.status(400).json({
+            msg: "Este correo ya está registrado :("
+        });
+    }
+
+    // Encriptar contraseña
+    const salt = bcryptjs.genSaltSync(); // complicacion de la emprictacion. Vueltas/veces que se encripta. Default = 10
+    user.pass = bcryptjs.hashSync(pass, salt) // Encriptacion de una via. Yo no puedo saber deninguna forma la pass
+
+    // Guardar en DB
+    await user.save(); // guarda en la DB
 
     res.json({
         // code: 1,
-        msg: "post API - postUser",
-        name,
-        age
+        // msg: "post API - postUser",
+        user
     });
 }
 

@@ -2,8 +2,18 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { fielValidator } = require('../middlewares/field-validator');
-const { checkValidRole, checkExistEmail, checkExistUserByID } = require('../helpers/db-validators')
+// const { fielValidator } = require('../middlewares/field-validator');
+// const { jwtValidator } = require('../middlewares/jwt-validator');
+// const { isAdminRole, hasRole } = require('../middlewares/role-validator');
+
+const {
+    fielValidator,
+    jwtValidator,
+    isAdminRole,
+    hasRole
+} = require('../middlewares/index');
+
+const { checkValidRole, checkExistEmail, checkExistUserByID } = require('../helpers/db-validators');
 
 const {
     getUser,
@@ -11,7 +21,7 @@ const {
     putUser,
     patchUser,
     deleteUser
-} = require('../controllers/users.controller')
+} = require('../controllers/users.controller');
 
 const router = Router();
 
@@ -37,6 +47,9 @@ router.post('/', [
 ], postUser) // se pueden enviar middlewares en el segundo argumento
 
 router.delete('/:id', [
+    jwtValidator,
+    // isAdminRole,
+    hasRole('ADMIN_ROLE', 'VENTAS_ROLE', 'OTHER_ROLE'),
     check('id', 'El ID no es válido').isMongoId(),
     check('id').custom(checkExistUserByID),
     fielValidator

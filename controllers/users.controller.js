@@ -54,6 +54,7 @@ const postUser = async (req = request, res = response) => {
         // msg: "post API - postUser",
         user
     });
+
 }
 
 const putUser = async (req = request, res = response) => {
@@ -96,10 +97,8 @@ const deleteUser = async (req = request, res = response) => {
     const user = await User.findByIdAndUpdate(id, { status: false })
 
     res.json({
-        // code: 1,
         msg: "delete API - deleteUser",
-        user,
-        id
+        user
     });
 }
 

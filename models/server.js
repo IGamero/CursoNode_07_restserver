@@ -9,7 +9,8 @@ class Server {
     constructor() {
         this.app = express(); // creamos el servidor con el constructor de server
         this.port = process.env.PORT;
-        this.usersPath = '/API/users';
+        this.usersPath   = '/API/users';
+        this.authPath    = '/API/auth';
 
         // Conectar a la Base de Datos
         this.conectarDB()
@@ -40,6 +41,7 @@ class Server {
 
     routes() {
         // endpoint
+        this.app.use(this.authPath, require('../routes/auth.routes'));
         this.app.use(this.usersPath, require('../routes/user.routes'));
     }
 

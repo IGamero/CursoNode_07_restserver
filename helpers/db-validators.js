@@ -20,7 +20,6 @@ const checkExistEmail = async (email = '') => {
 // Verificar si el id existe (Validaciones)
 const checkExistUserByID = async (id) => {
     const userByID = await User.findById(id);
-    console.log(userByID)
     if (!userByID) {
         throw new Error(`No existe usuario con id '${id}'`);
     }

@@ -47,7 +47,8 @@ const UserSchema = Schema({
 });
 
 UserSchema.methods.toJSON = function () {
-    const { __v, pass, ...user } = this.toObject();  // el operador ... indica el resto de elementos
+    const { __v, pass, _id, ...user } = this.toObject();  // el operador ... indica el resto de elementos
+    user.uid = _id;
     return user;
 }
 

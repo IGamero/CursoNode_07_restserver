@@ -9,7 +9,7 @@
 //     img: 'asdfsdafsad',
 //     role: 'admin',
 //     status: true/false,
-//     google: true/false (cuenta google?)
+//     isGoogleUser: true/false (cuenta google?)
 // }
 
 const { Schema, model } = require('mongoose');
@@ -34,6 +34,7 @@ const UserSchema = Schema({
     role: {
         type: String,
         required: true,
+        default: "USER_ROLE",
         emun: ['ADMIN_ROLE', 'USER_ROLE']
     },
     status: {

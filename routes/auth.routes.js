@@ -4,7 +4,7 @@ const { check } = require('express-validator');
 
 
 const { fielValidator } = require('../middlewares/field-validator');
-const { loginController } = require('../controllers/auth.controller');
+const { loginController, googleSignIn } = require('../controllers/auth.controller');
 
 const router = Router();
 
@@ -14,5 +14,9 @@ router.post('/login',[
     check('pass', "La contraseña es obligatiora").not().isEmpty(),
     fielValidator
 ] , loginController);
+
+router.post('/google',[
+    check('id_token', "El token de google es necesario").notEmpty(),
+] , googleSignIn);
 
 module.exports = router;
